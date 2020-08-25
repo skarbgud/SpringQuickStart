@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<context:component-scan base-package="polymorphism"></context:component-scan>
+	<!-- <bean class="polymorphism.SonySpeaker"></bean> -->
+	<bean class="polymorphism.AppleSpeaker"></bean>
+	<!-- @Autowired에 의해서 주입되는 개체를 XML 파일에서 빈 등록으로 설정한다. -->
+	<!-- 단 라이브러리 형태로 제공되는 클래스는 반드시 XML 설정을 통해서만 사용할 수 있다. -->
+</beans>
