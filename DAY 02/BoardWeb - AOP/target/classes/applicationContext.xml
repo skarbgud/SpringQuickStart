@@ -18,11 +18,19 @@
 	
 	<bean id="log" class="com.springbook.biz.common.Log4jAdvice"></bean>
 	
+	<!-- 
+		AOP 
+	- 조인포인트(JoinPoint) : 클라이언트가 호출하는 모든 비즈니스 메소드
+	- 포인트컷(Pointcut) : 필터링된 조인포인트
+	- 어드바이스(Advice) : 공통 기능의 코드
+	-->
+	
 	<aop:config>
 		<aop:pointcut id="allPointcut" expression="execution(* com.springbook.biz..*Impl.*(..))"/>
-						
+		<aop:pointcut id="getPointcut" expression="execution(* com.springbook.biz..*Impl.get*(..))"/>
+														<!--*:리턴타입  com.springbook.biz.:패키지 경로 .*Impl:클래스명  get*(..):메소드명 및 매개변수-->						
 		<aop:aspect ref="log">
-			<aop:before method="printLogging" pointcut-ref="allPointcut"/>
+			<aop:after method="printLogging" pointcut-ref="getPointcut"/>
 		</aop:aspect>				
 	</aop:config>
 </beans>
