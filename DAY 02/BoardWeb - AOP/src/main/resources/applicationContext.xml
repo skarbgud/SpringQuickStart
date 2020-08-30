@@ -99,17 +99,17 @@
 	 </aop:config>
 	 
 	 <bean id="afterThrowing" class="com.springbook.biz.common.AfterThrowingAdvice" />
-	 <bean id="after" class="com.springbook.biz.common.AfterAdvice" />
+	 <bean id="after" class="com.springbook.biz.common.AfterAdvice"></bean>
 	 
-	  <aop:config>
-	 	<aop:pointcut expression="execution(* com.springbook.biz..*Impl.get*(..))" id="allPointcut"/>
+	 <aop:config>
+	 	<aop:pointcut expression="execution(* com.springbook.biz..*Impl.*(..))" id="allPointcut"/>
 	 	
 	 	<aop:aspect ref="afterThrowing">
 	 		<aop:after-throwing method="exceptionLog" pointcut-ref="allPointcut"/>
 	 	</aop:aspect>
 	 	
 	 	<aop:aspect ref="after">
-	 		<aop:after method="finally" pointcut-ref="allPointcut"/>
+	 		<aop:after method="finallyLog" pointcut-ref="allPointcut"/>
 	 	</aop:aspect>
 	 </aop:config>
 </beans>
