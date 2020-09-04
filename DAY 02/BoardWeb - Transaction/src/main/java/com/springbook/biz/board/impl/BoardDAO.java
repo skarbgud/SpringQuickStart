@@ -77,7 +77,7 @@ public class BoardDAO{
 	}
 	
 	// 글 상세 조회
-	public void getBoard(BoardVO vo) {
+	public BoardVO getBoard(BoardVO vo) {
 		System.out.println("===> JDBC로 getBoard() 기능 처리");
 		BoardVO board = null;
 		try {
@@ -99,6 +99,7 @@ public class BoardDAO{
 		} finally {
 			JDBCUtil.close(stmt, conn);
 		}
+		return board
 	}
 	
 	// 글 목록 조회
