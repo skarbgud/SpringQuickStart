@@ -1,28 +1,28 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 					  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>๋ก๊ทธ์ธ</title>
+<title>ทฮฑืภฮ</title>
 </head>
 <body>
 <center>
-<h1>๋ก๊ทธ์ธ</h1>
+<h1>ทฮฑืภฮ</h1>
 <hr>
 <form action="login_proc.jsp" method="post">
 <table border="1" cellpadding="0" cellspacing="0">
 	<tr>
-		<td bgcolor="orange">์•์ด๋””</td>
+		<td bgcolor="orange">พฦภฬต๐</td>
 		<td><input type="text" name="id"></td>
 	</tr>
 	<tr>
-		<td bgcolor="orange">ํจ์ค์๋“</td>
+		<td bgcolor="orange">ฦะฝบฟ๖ตๅ</td>
 		<td><input type="password" name="password"></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<input type="submit" value="๋ก๊ทธ์ธ"/>
+			<input type="submit" value="ทฮฑืภฮ"/>
 		</td>
 	</tr>
 </table>
