@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springbook.biz.board.BoardDAOSpring;
 import com.springbook.biz.board.BoardService;
 import com.springbook.biz.board.BoardVO;
 
@@ -13,7 +12,8 @@ import com.springbook.biz.board.BoardVO;
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
-	private BoardDAOSpring boardDAO;
+//	private BoardDAOSpring boardDAO;
+	private BoardDAO boardDAO;	// 기존의 DAO 클래스를 수정하여도 BoardController를 수정할 필요가 없다.
 	
 	@Override
 	public void insertBoard(BoardVO vo) {
