@@ -76,12 +76,11 @@ public class BoardController {
 	
 	// 글 목록 검색
 	@RequestMapping("getBoardList.do")
-	public String getBoardList(@RequestParam(value = "searchCondition", 
-				defaultValue="TITLE", required = false) String condition,	// value 화면으로부터 전달될 파라미터 이름
-				@RequestParam(value = "searchKeyword", defaultValue = "", required = false)	//defaultValue 화면으로부터 전달될 파라미터 정보가 없을 때, 설정할 기본값
-				String keyword, BoardVO vo, Model model) {	// required 파리미터 생략 여부
-		System.out.println("검색 조건 : "+ condition);
-		System.out.println("검색 단어 : "+ keyword);
+	public String getBoardList(BoardVO vo, Model model) {	// required 파리미터 생략 여부
+		// Null Check
+		if(vo.getSearchCondition() == null) vo.setSearchCondition("TITLE");
+		if(vo.getSearchKeyword() == null) vo.setSearchKeyword("");
+		// Model 정보 저장
 		model.addAttribute("boardList", boardService.getBoardList(vo));
 		return "getBoardList.jsp"; //View 정보 저장
 	}
