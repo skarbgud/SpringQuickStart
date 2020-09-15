@@ -3,26 +3,131 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BoardDAO">
-	<insert id="insertBoard">
-		insert into board(seq, title, writer, content)
-		values((select nvl(max(seq), 0)+1 from board), #{title}, #{writer}, #{content})
+	
+	<resultMap id="boardResult" type="board">
+		<id property="seq" column="SEQ" />
+		<result property="title" column="TITLE" />
+		<result property="writer" column="WRITER" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REGDATE" /> 
+		<result property="cnt" column="CNT" />
+	</resultMap>
+	
+	<insert id="insertBoard" parameterType="board">
+		<![CDATA[
+			INSERT INFO BOARD(SEQ, TITLE, WRITER, CONTENT)
+			VALUES((SELECT NVL(MAX(SEQ), 0)+1 FROM BOARD),
+			#{title}, #{writer}, #{content})
+		]]>
 	</insert>
 	
 	<update id="updateBoard">
-		update board set title=#{title}, content=#{content} where seq=#{seq}
+		<![CDATA[
+			UPDATE BOARD SET
+				TITLE = #{title},
+				CONTENT = #{content}
+				WHERE SEQ = #{seq}
+		]]>
 	</update>
 	
 	<delete id="deleteBoard">
-		delete board where seq=#{seq}
+		<![CDATA[
+			DELETE BOARD
+			WHERE SEQ = #{seq}
+		]]>
 	</delete>
 	
 	<select id="getBoard" resultType="board">
-		select * from board where seq=#{seq}
+		<![CDATA[
+			SELECT * 
+			FROM BOARD 
+			WHERE SEQ = #{seq}
+		]]>
 	</select>
 	
-	<select id="getBoardList" resultType="board">
-		select * from board
-		where title like '%'||#{searchKeyword}||'%'
-		order by seq desc
+	<select id="getBoardList" resultMap="boardResult">
+		<![CDATA[
+			SELECT * 
+			FROM BOARD 
+			WHERE TITLE LIKE '%'||#{searchKeyword}||'%'
+			ORDER BY SEQ DESC
+		]]>
 	</select>
+	
+	<!-- 
+		-<select> 엘리먼트
+		(1) id 속성
+		<select> 엘리먼트에 선언된 id 속성은 필수로, 전체 Mapper 파일들 내에서 유일한 아이디를 등록해야 한다.
+		특정 DAO 클래스에서 특정 아이디로 등록된 SQL을 실행
+		<mapper> 엘리먼트에 설정된 네이스페이스는 <mapper> 엘리먼트 안에서 선언된 여러 아이디를 하나의 네임스페이스로 묶을 수 있다.
+		
+		(2) paramaterType 속성
+		Mapper 파일에 등록된 SQL을 실행 하려면 SQL 실행에 필요한 데이터를 외부로부터 받아야한다.
+		이때 사용하는 속성이 paramterType 속성이다. parameterType 속성값으로는 일반적으로 기본형이나 VO 형태의 클래스를 지정한다.
+		Mybatis 메인 설정 파일에 등록된 <typeAlias>의 사용하면 설정을 더 간결하게 처리가능
+		ex)
+			<typeAliases>
+				<typeAlias alias="borad" type="com.springbook.biz.board.BoardVO"/>
+			</typeAliases>
+			
+			<select id="getBoard" parameterType="board" resultType="board">
+				select * from board where seq = #{seq}
+			</select>
+			
+		(3) resultType 속성
+		검색 관련 SQL 구문이 실행되면 ResultSet이 리턴되며, ResultSet에 저장된 검색 결과를 어떤 자바 객체에 매핑할지 지정해야 하는데,
+		이때 사용하는 것이 resultType 속성이다.
+		
+		- <insert> 엘리먼트
+		<insert> 구문은 자식 요소로 <selectKey> 엘리먼트를 가질 수 있다. 대부분 관계형 데이터베이스에서는 기본 키 필드의
+		자동 생성을 지원하는데, Mybatis에서는 <insert> 요소의 자식 요소 <selectKey>를 사용하여 생성된 키를 쉽게 가져올 수 있다.
+		
+		ex) <insert id="insertBoard" parameterType="board">
+				<selectKey keyProperty="seq" resultType="int">
+					select board_seq.nextval as seq from dual
+				</selectKey>
+				insert into board(seq, title, writer, content)
+				values (#{seq}, #{title}, #{writer}, #{content})
+			</insert>
+		
+		<update> 엘리먼트
+		- <update> 엘리먼트는 데이터를 수정할 떄 사용되는 UPDATE 구문을 작성하는 요소이다.
+		
+		<delete> 엘리먼트
+		- <delete> 엘리먼트는 데이터를 수정할 떄 사용되는 DELETE 구문을 작성하는 요소이다.
+		
+		검색결과를 특정 자바 객체에 매핑하여 리턴하기 위해 parameterType 속성을 사용한다.
+		예를 들어, 검색 쿼리가 단순 테이블 조회가 아닌 JOIN 구문을 포함할 때는 검색 결과를 정확하게 
+		하나의 자바 객체로 매핑할 수 없다. 또는 검색된 테이블의 칼럼 이름과 매핑에 사용될 자바 객체의
+		변수 이름이 다를 때에 검색 결과가 정확하게 자바 객체로 매핑되지 않는다. 이럴 때 resultMap
+		속성을 사용하여 처리
+		
+		<resultMap>
+		
+		<mapper namespace="board">
+			<resultMap id="boardResult" type="board">
+				<id property="seq" column="SEQ" />
+				<result property="title" column="TITLE" />
+				<result property="writer" column="WRITER" />
+				<result property="content" column="CONTENT" />
+				<result property="regDate" column="REGDATE" /> 
+				<result property="cnt" column="CNT" />
+			</resultMap>
+			
+			<select id="getBoardList" parameterType="board" resultMap="boardResult">
+				select* from board
+				where title like '%'||#{searchKeyword}||'%'
+				order by seq desc
+			</select>
+		</mapper>
+		
+		CDATA Section 사용
+		만약 SQL 구문 내에 '<' 기호를 사용한다면 에러가 발생한다.
+		- CDATA사용법
+		<![CDATA[SQL구문]]>    XML 파서가 해석하지 않도록 한다.
+		
+		- SQL 대문자로 설정하기
+		Mapper 파일에 등록되는 SQL 구문은 일반적으로 대문자로 작성한다.
+		칼럼명이랑 변수명이랑 같으므로 둘을 구분하기 쉽게 대문자로 표현하여 식별성을 높인다.
+	 -->
 </mapper>
