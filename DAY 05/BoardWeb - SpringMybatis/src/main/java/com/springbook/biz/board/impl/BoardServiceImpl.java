@@ -13,7 +13,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 //	private BoardDAOSpring boardDAO;
-	private BoardDAO boardDAO;	// 기존의 DAO 클래스를 수정하여도 BoardController를 수정할 필요가 없다.
+//	private BoardDAO boardDAO;	// 기존의 DAO 클래스를 수정하여도 BoardController를 수정할 필요가 없다.
+	private BoardDAOMybatis boardDAO;
+	
 	
 	@Override
 	public void insertBoard(BoardVO vo) {
